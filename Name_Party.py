@@ -1,5 +1,5 @@
 
-# öffne die namen, speichere sie alpahbetisch in ein excel dokument
+# open .txt and search for names and print them to an excel document.
 
 import openpyxl
 import re
@@ -13,19 +13,25 @@ name_compiled = re.compile(name_regex, re.VERBOSE)
 
 #open the excel document
 wb = openpyxl.load_workbook("namelist.xlsx")
-sheet = wb.get_sheet_by_name("liste")
+sheet = wb.get_sheet_by_name("Namensliste")
+
+# dimensions of the columns to properly display long names
+sheet.column_dimensions["A"].width = 22
+sheet.column_dimensions["B"].width = 22
+sheet.column_dimensions["C"].width = 22
+sheet.column_dimensions["D"].width = 22
 
 # open file with names
 f = codecs.open("names.txt", encoding="utf-8")
 name = f.readlines()
 name = "".join(name)
-print(" Raw Names ".center(40,"="), "\n")
+print(" Raw Names ".center(40, "="), "\n")
 
 #find names that match the pattern
 raw_names = name_compiled.findall(name)
-raw_names = sorted(raw_names, key=lambda s: s.lower())  #  sort them alphabetically
+raw_names = sorted(raw_names, key=lambda s: s.lower())  # sort them alphabetically
 print(raw_names)
-print(" Alle Namen ".center(40,"="))
+print(" Alle Namen ".center(40, "="))
 
 # info about names and lines
 count_names = len(raw_names)
@@ -46,7 +52,7 @@ for n in raw_names:
     print("Hinzugefügt:", n, end="")
     sheet[cell_ort] = n
     r += 1
-    if r == 40:
+    if r == 51:
         c += 1
         r = 1
 
